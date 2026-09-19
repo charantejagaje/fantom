@@ -1,0 +1,47 @@
+# ---- Secrets ----
+.env
+*.env
+!.env.example
+
+# ---- Data (raw & processed datasets are not committed) ----
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+
+# ---- Model artifacts ----
+*.joblib
+*.pkl
+*.onnx
+models/
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ---- Node / frontend ----
+node_modules/
+dist/
+build/
+.vite/
+*.tsbuildinfo
+
+# ---- Jupyter / notebooks ----
+.ipynb_checkpoints/
+
+# ---- IDE / OS ----
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# ---- Logs & temp ----
+*.log
+logs/
+tmp/
