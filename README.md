@@ -1,5 +1,6 @@
 # Fantom
-++## 1. Problem Understanding
+
+## 1. Problem Understanding
 
 Manufacturing factories produce many products at high speed. A small defect, a slow machine, too much work waiting between steps, or a change in a production batch can reduce quality, production speed, and profit.
 
