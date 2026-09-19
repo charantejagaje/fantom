@@ -1,164 +1,255 @@
-# Fantom
+# FANTOM-INDSUTRIAL AI DECISION INTELLIGENCE
 
-## 1. Problem Understanding
+## AI Decision-Support System for Square / Rectangular Steel Tube Manufacturing
 
-Manufacturing factories produce many products at high speed. A small defect, a slow machine, too much work waiting between steps, or a change in a production batch can reduce quality, production speed, and profit.
+LineSentinel AI is a software-only AI system for a multi-stage square and rectangular steel-tube manufacturing line.
 
-The problem is that these things are connected. A defect may be related to a process condition. A process problem may create a bottleneck. A bottleneck can reduce throughput and increase losses.
+**Core idea:**  
+**Defect → Possible Cause → Bottleneck → Throughput/Loss → Cost Impact → Recommendation**
 
-Our system is designed to bring these pieces together in one place.
+## 1. Problem
 
-### What our system will do
+Steel-tube manufacturing can face defects, downtime, high cycle times, bottlenecks, scrap, and rework. These problems can affect both production and cost.
 
-- Check whether a product is acceptable or defective.
-- Identify the defect when the available data supports it.
-- Show uncertainty instead of forcing a wrong answer for a new or unclear defect.
-- Study production data to find bottlenecks and process problems.
-- Estimate how these problems can affect throughput, losses, and profitability.
-- Connect defect patterns with process and batch information to help find possible root causes.
-- Give evidence-based recommendations. These recommendations are simulated/advisory only.
+Our goal is not only to detect a defective tube. We connect quality information with production and economic information to help identify possible contributing factors, production constraints, business impact, and useful advisory actions.
 
-The goal is **not only to detect defects**. The goal is to help answer:
+## 2. Manufacturing Scenario
 
-> **What is wrong? Why might it be happening? Where is the production flow affected? What is the business impact? What could be changed?**
-
----
-
-## 2. Proposed Solution
-
-We propose a software-only AI decision-support system that combines three main types of data:
-
-1. **Inspection data** – information about product quality and defects.
-2. **Production data** – information about stations, cycle times, batches, capacity, downtime, and other operating conditions.
-3. **Economic data** – information needed to estimate cost, losses, and profitability.
-
-The system processes these inputs and presents the results in one dashboard.
-
-### Simple flow
+We focus on **square / rectangular steel-tube manufacturing**.
 
 ```text
-Inspection Data ─────┐
-Production Data ─────┼──> AI/ML Analysis ──> Results ──> Dashboard
-Economic Data ───────┘             │
-                                   ├─ Defect Detection
-                                   ├─ Defect Location (when supported)
-                                   ├─ Uncertainty / New Defect Flag
-                                   ├─ Root-Cause Analysis
-                                   ├─ Bottleneck Detection
-                                   ├─ Throughput and Loss Impact
-                                   └─ Profitability Estimate
-                                              │
-                                              ↓
-                                      Recommendations
+Steel Coil / Raw Steel
+        ↓
+Forming / Roll Forming
+        ↓
+Welding
+        ↓
+Sizing / Straightening
+        ↓
+Cutting
+        ↓
+Surface Finishing
+        ↓
+Quality Inspection
+        ↓
+Packing
 ```
 
----
+## 3. Main Features
 
-## 3. Architecture
+### Defect Analysis
+Classify units as acceptable or defective. Defect categories are used only when supported by the dataset.
 
-### Main parts of the system
+Possible demo examples:
+- Weld defect
+- Dimensional variation
+- Surface defect
+- Bending/deformation
+- Poor straightness
+- Wall-thickness variation
+- Cut-length variation
 
-**1. Data Input**  
-Receives the organizer-provided inspection, production, and economic datasets.
+### Confidence / Uncertainty
+Predictions are grouped into:
+- High Confidence
+- Medium Confidence
+- Needs Review
 
-**2. Data Processing**  
-Cleans and prepares the data so that it can be used by the analysis models.
+Uncertain cases are flagged instead of being blindly forced into a class.
 
-**3. AI/ML Layer**  
-Analyzes quality and production patterns. The exact model will depend on the provided data.
+### Possible Root-Cause Analysis
+The system looks for observed relationships between defects and available factors such as:
+- Batch
+- Machine/station
+- Cycle time
+- Downtime
+- Utilization
+- Operating conditions
 
-**4. Root-Cause Analysis**  
-Looks for relationships between defects and process/batch conditions to identify possible causes.
+These are labelled **Observed Associations**, not proven causes.
 
-**5. Bottleneck and Impact Analysis**  
-Finds production-flow constraints and estimates their effect on throughput and losses.
+### Bottleneck Analysis
+Compare production stages using available:
+- Utilization
+- Cycle time
+- Downtime
+- Waiting/queue information when available
 
-**6. Profitability Analysis**  
-Uses the available economic information to estimate the effect of quality and process changes on profitability or margin.
+Identify the stage that appears to constrain production.
 
-**7. Recommendation Layer**  
-Generates evidence-based, simulated suggestions for process improvement.
+### Throughput and Loss
+Estimate:
+- Throughput
+- Scrap
+- Rework
+- Downtime impact
+- Production loss
 
-**8. Dashboard**  
-Shows predictions, evidence, trends, bottlenecks, costs, and recommendations in an easy-to-understand format.
+### Cost / Profitability
+Estimate:
+- Scrap cost
+- Rework cost
+- Downtime cost
+- Throughput-related loss
+- Margin impact
 
----
+Estimated or simulated values are labelled clearly.
 
-## 4. Our AI/ML Approach
+### Recommendations
+Every recommendation explains:
+- **WHAT** — action to investigate
+- **WHY** — reason
+- **EVIDENCE** — supporting data
+- **EXPECTED IMPACT** — possible effect
 
-The AI/ML approach will be selected based on the structure of the organizer-provided data.
+Recommendations are advisory only.
 
-### Defect prediction
+## 4. AI / ML Approach
 
-The model will classify products as:
+Primary model:
+**Random Forest Classifier**
 
-- Acceptable
-- Defective
+Baseline:
+**Logistic Regression**
 
-When supported by the data, it will also identify the defect category and location.
+Initial task:
+**Acceptable vs Defective**
 
-### Uncertainty handling
+If the actual dataset contains valid defect-type labels, defect-type classification can also be added.
 
-A prediction will not always be treated as correct with complete confidence. If the model is uncertain or the pattern looks new, the system can flag the case for review instead of forcing a label.
+Evaluation:
+- Accuracy
+- Precision
+- Recall
+- F1-score
+- Confusion Matrix
 
-### Root-cause analysis
+We will not claim a final accuracy before training and testing on the actual data.
 
-We will compare defect patterns with production conditions such as batch and process information. This helps identify conditions that are associated with recurring defects.
+## 5. Defect Size / Detection Precision
 
-### Bottleneck detection
+The minimum defect size we can reliably detect depends on the inspection data and its resolution.
 
-Production information such as cycle time, capacity, downtime, and work waiting between stages can be analyzed to find areas that restrict production flow.
+For example, a target such as **3 mm detection** can only be claimed after testing data that supports that measurement level.
 
-### Impact estimation
+## 6. Data Sources
 
-The system will connect quality and production problems with throughput, losses, cost, and profitability using the available economic data.
+The hackathon is software-only. We do not directly connect physical factory equipment for judging.
 
-### Explainability
+In a real factory, inspection information could come from:
+- Vision cameras
+- Laser/dimensional sensors
+- Ultrasonic inspection
+- Eddy-current inspection
+- Machine/process sensors
 
-For important predictions, the system will show the evidence or important factors behind the result so that users can understand why the system reached that conclusion.
+For the hackathon, the software uses organizer-provided inspection, production, and economic datasets.
 
----
+If real data is not yet available, clearly labelled synthetic/demo data may be used for development.
 
-## 5. Expected Output
+## 7. System Architecture
 
-The dashboard should give the user a clear view of:
+```text
+Inspection Data
+Production Data
+Economic Data
+        ↓
+Data Processing
+        ↓
+Feature Engineering
+        ↓
+AI / ML Analysis
+        ↓
+Defect Prediction + Confidence
+        ↓
+Possible Contributing Factors
+        ↓
+Bottleneck Detection
+        ↓
+Throughput / Loss
+        ↓
+Cost / Margin Impact
+        ↓
+Recommendations
+        ↓
+Dashboard
+```
 
-- Product quality status
-- Defect type and location when supported
-- Confidence / uncertainty
-- Possible process or batch relationships
-- Production bottlenecks
-- Throughput and loss impact
-- Profitability / margin impact
-- Recommended process changes
+## 8. What Makes It Different
 
-All recommendations and interventions are **simulated/advisory only**, as required by the problem statement.
+A basic defect system may stop at:
 
----
+```text
+Product → Defective / Not Defective
+```
 
-## 6. Why This Is Different
+Our intended flow is:
 
-A basic solution may only answer:
+```text
+Product
+   ↓
+Is it defective?
+   ↓
+What factors are associated with the problem?
+   ↓
+Where is production constrained?
+   ↓
+What is the throughput/loss impact?
+   ↓
+What is the estimated cost impact?
+   ↓
+What should the factory investigate?
+```
 
-> **"Is this product defective?"**
+This makes the project a **decision-support system**, not only a classifier.
 
-Our proposed system aims to answer a larger industrial question:
+## 9. Software-Only and Advisory
 
-> **"What is wrong with the product or process, what may be causing it, how is the production flow affected, what is the estimated business impact, and what change could be tested?"**
+The system does not:
+- Control machines
+- Connect to PLCs
+- Control robots
+- Perform automatic sorting
+- Require a live factory connection for judging
 
-This follows the problem statement's requirement for a unified decision-support system instead of only an image classifier or an isolated KPI dashboard.
+Recommendations are simulated/advisory.
 
----
+## 10. Checkpoint 2 Prototype
 
+The working prototype should demonstrate:
 
-## 7. Current Scope
+1. Manufacturing data is loaded.
+2. Defect analysis works.
+3. Model confidence is shown.
+4. Possible contributing factors are displayed.
+5. A bottleneck is identified.
+6. Throughput/loss is estimated.
+7. Cost impact is estimated.
+8. A recommendation is generated.
+9. The complete result is shown in a professional dashboard.
 
-For the hackathon, the system will remain **software-only** and will use organizer-provided datasets.
+## 11. Important Limitations
 
-No live camera feed, PLC connection, robotic sorting, machine control, or production-line hardware connection is required or permitted for judging.
+We clearly distinguish:
+- Real data vs synthetic/demo data
+- Model predictions vs measured results
+- Observed association vs proven causation
+- Estimated cost vs actual financial results
+- Software simulation vs real factory control
 
----
+We do not claim capabilities that the available data does not support.
 
-## 8. Note on Model Selection
+## 12. Future Improvements
 
-We will finalize the exact machine-learning models after inspecting the organizer-provided datasets. We will choose models that match the available data and the required tasks instead of choosing a model without checking the data first.
+- Better defect classification
+- Defect localization when positional data is available
+- Better handling of unseen conditions
+- False-accept / false-reject analysis
+- Improved uncertainty calibration
+- Stronger root-cause correlation
+- Improved economic simulation
+- Further UI/UX improvements
+
+## 13. One-Line Explanation
+
+> **LineSentinel AI does not just identify a bad steel tube; it connects the defect to possible process issues, production bottlenecks, throughput and cost impact, and gives an explainable recommendation for what to investigate.**
