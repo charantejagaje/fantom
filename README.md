@@ -150,20 +150,8 @@ This follows the problem statement's requirement for a unified decision-support 
 
 ---
 
-## 7. Checkpoint 1 Coverage
 
-### Problem Understanding – 5 marks
-We explain the connection between product quality, production flow, bottlenecks, losses, and profitability.
-
-### Architecture – 5 marks
-We define the flow from inspection, production, and economic data to AI/ML analysis, impact analysis, recommendations, and dashboard output.
-
-### Approach – 5 marks
-We explain our planned approach for defect prediction, uncertainty handling, root-cause correlation, bottleneck analysis, impact estimation, and explainability.
-
----
-
-## 8. Current Scope
+## 7. Current Scope
 
 For the hackathon, the system will remain **software-only** and will use organizer-provided datasets.
 
@@ -171,6 +159,6 @@ No live camera feed, PLC connection, robotic sorting, machine control, or produc
 
 ---
 
-## 9. Note on Model Selection
+## 8. Note on Model Selection
 
 We will finalize the exact machine-learning models after inspecting the organizer-provided datasets. We will choose models that match the available data and the required tasks instead of choosing a model without checking the data first.
