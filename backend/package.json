@@ -1,0 +1,13 @@
+{
+  "name": "fantom-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "FANTOM analytics API - serves observed simulation data and completed analytics outputs",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
