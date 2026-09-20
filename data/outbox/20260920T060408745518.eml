@@ -1,0 +1,43 @@
+Subject: Reset your FANTOM password
+From: fantom@localhost
+To: test.worker@fantom.dev
+Date: Sun, 20 Sep 2026 00:34:08 -0000
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="===============1724446757816283169=="
+
+--===============1724446757816283169==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+
+Enable HTML view to see this message.
+
+--===============1724446757816283169==
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+<div style=3D"font-family:Arial,Helvetica,sans-serif;max-width:520px;margin:0=
+ auto">
+  <h2 style=3D"color:#11141B">FANTOM &middot; Reset password</h2>
+  <p>Use the button below within <strong>60 minutes</strong>.
+     If you did not request this, you can ignore this email.</p>
+  <p style=3D"margin:24px 0">
+    <a href=3D"http://localhost:8080/reset-password?token=3Doct3hliApu2SnXtoB=
+X7pUCgY-_CFCIOm0mtTUoxbeUE" style=3D"background:#159A62;color:#fff;padding:12=
+px 22px;
+       border-radius:8px;text-decoration:none;font-weight:bold">Reset passwor=
+d</a>
+  </p>
+  <p style=3D"color:#64748b;font-size:12px">Or paste this link into your brow=
+ser:<br>
+     <a href=3D"http://localhost:8080/reset-password?token=3Doct3hliApu2SnXto=
+BX7pUCgY-_CFCIOm0mtTUoxbeUE">http://localhost:8080/reset-password?token=3Doct=
+3hliApu2SnXtoBX7pUCgY-_CFCIOm0mtTUoxbeUE</a></p>
+  <hr style=3D"border:none;border-top:1px solid #e2e8f0">
+  <p style=3D"color:#94a3b8;font-size:11px">FANTOM Industrial Decision Suppor=
+t -
+     advisory only; never controls machinery.</p>
+</div>
+
+--===============1724446757816283169==--

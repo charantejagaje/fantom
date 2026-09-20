@@ -15,6 +15,8 @@ import { MachineInspectionModal } from './components/modals/MachineInspectionMod
 import { AimlStudentGuideModal } from './components/modals/AimlStudentGuideModal';
 
 import { ShieldCheck, CheckCircle2, AlertTriangle, Info } from 'lucide-react';
+import { InspectionStreamRunner } from './components/common/InspectionStreamRunner';
+import { Round2Showcase } from './components/views/showcase/Round2Showcase';
 
 export default function App() {
   const { 
@@ -90,13 +92,43 @@ export default function App() {
     });
   };
 
+  // Round 2 presentation showcase: additive page reachable via ?view=showcase
+  // (works with or without login; no existing view is modified).
+  const isShowcase = new URLSearchParams(window.location.search).get('view') === 'showcase';
+  if (isShowcase) {
+    return (
+      <div className="min-h-screen bg-[#F8FAFC] text-[#0F172A] flex flex-col font-sans selection:bg-emerald-500/20 selection:text-emerald-800">
+        <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 pt-6">
+          <Round2Showcase />
+        </main>
+        <footer className="mt-auto border-t border-slate-200 bg-white py-6 px-6 text-xs text-slate-500 font-mono">
+          <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
+            <div className="flex items-center gap-2">
+              <span className="font-extrabold text-slate-900">FANTOM</span>
+              <span>// MULTI-ROLE INDUSTRIAL AI PLATFORM</span>
+              <span className="text-slate-300">|</span>
+              <span>v3.0.0-ROLE-ARCH</span>
+            </div>
+            <div className="flex items-center gap-2 text-slate-600">
+              <ShieldCheck size={14} className="text-emerald-600" />
+              <span>Unified Factory State • Owner (EBIT) • Engineer (Twin) • Worker (Field)</span>
+            </div>
+          </div>
+        </footer>
+      </div>
+    );
+  }
+
   // If not signed in, show demo authentication page
   if (!isAuthenticated || !currentUser) {
     return <LoginPage onSuccessLogin={() => {}} />;
   }
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-[#0F172A] flex flex-col font-sans selection:bg-emerald-500/20 selection:text-emerald-800">
+    <div className="min-h-screen bg-white text-slate-900 flex flex-col font-sans selection:bg-emerald-500/20 selection:text-emerald-800">
+      {/* Background Simulated Inspection Engine */}
+      <InspectionStreamRunner />
+
       {/* Role-Aware Global Header */}
       <RoleAwareHeader
         onOpenIncidentChat={handleOpenIncidentChat}
@@ -178,7 +210,6 @@ export default function App() {
         isOpen={isMachineInspectionOpen}
         onClose={() => setIsMachineInspectionOpen(false)}
         stationId={inspectedStationId}
-        onNavigateToSimulation={() => {}}
       />
 
       {/* Modals: AIML 2nd-Year Curriculum Glossary Modal */}

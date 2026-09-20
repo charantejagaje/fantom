@@ -1,0 +1,43 @@
+Subject: Verify your FANTOM account
+From: fantom@localhost
+To: worker.test@test.com
+Date: Sun, 20 Sep 2026 00:27:49 -0000
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="===============5952684254633547614=="
+
+--===============5952684254633547614==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+
+Enable HTML view to see this message.
+
+--===============5952684254633547614==
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+<div style=3D"font-family:Arial,Helvetica,sans-serif;max-width:520px;margin:0=
+ auto">
+  <h2 style=3D"color:#11141B">FANTOM &middot; Verify email</h2>
+  <p>Use the button below within <strong>1440 minutes</strong>.
+     If you did not request this, you can ignore this email.</p>
+  <p style=3D"margin:24px 0">
+    <a href=3D"http://localhost:8080/verify-email?token=3D3o2mnXGeIusKyViijqk=
+2Eq7mwGAYL2itLJPO2GSt5rQ" style=3D"background:#159A62;color:#fff;padding:12px=
+ 22px;
+       border-radius:8px;text-decoration:none;font-weight:bold">Verify email<=
+/a>
+  </p>
+  <p style=3D"color:#64748b;font-size:12px">Or paste this link into your brow=
+ser:<br>
+     <a href=3D"http://localhost:8080/verify-email?token=3D3o2mnXGeIusKyViijq=
+k2Eq7mwGAYL2itLJPO2GSt5rQ">http://localhost:8080/verify-email?token=3D3o2mnXG=
+eIusKyViijqk2Eq7mwGAYL2itLJPO2GSt5rQ</a></p>
+  <hr style=3D"border:none;border-top:1px solid #e2e8f0">
+  <p style=3D"color:#94a3b8;font-size:11px">FANTOM Industrial Decision Suppor=
+t -
+     advisory only; never controls machinery.</p>
+</div>
+
+--===============5952684254633547614==--

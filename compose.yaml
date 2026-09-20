@@ -1,35 +1,85 @@
+# Fantom - deployment composition: frontend (nginx) + FastAPI backend + PostgreSQL
+# Usage:
+#   cp .env.example .env   (fill in real secrets; never commit .env)
+#   docker compose up --build
+#
+# The legacy AI-Studio style app stays available at / ; the deployment platform
+# UI is served at /platform.html.
+
 services:
-  # FastAPI backend + ML inference
-  backend:
-    build: ./backend
+  # Dev email testing UI at http://localhost:8025 (used when SMTP_HOST=mailpit).
+  # Production: set real SMTP_* env vars on the backend instead; this service
+  # can stay but is unused.
+  mailpit:
+    image: axllent/mailpit:latest
     ports:
-      - "8000:8000"
-    env_file: .env
-    volumes:
-      - ./data:/app/data
+      - "8025:8025"   # web UI
+    environment:
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
     restart: unless-stopped
 
-  # Frontend dashboard (Streamlit or React dev server)
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+    # Not exposed to the host by default - only the backend talks to it.
+
+  backend:
+    build: ./backend
+    environment:
+      ENVIRONMENT: ${ENVIRONMENT:-production}
+      DB_ENGINE: postgresql
+      DB_HOST: db
+      DB_PORT: "5432"
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:8080,http://127.0.0.1:8080}
+      DATASET_PROCESSED_DIR: /app/data/processed
+      DATASET_RAW_DIR: /app/data/raw
+      ML_MODELS_DIR: /app/ml/saved_models
+      SECRET_KEY: ${SECRET_KEY:?set SECRET_KEY in .env (see .env.example)}
+      REQUIRE_EMAIL_VERIFICATION: ${REQUIRE_EMAIL_VERIFICATION:-true}
+      ENGINEER_INVITE_CODES: ${ENGINEER_INVITE_CODES:-}
+      APP_PUBLIC_URL: ${APP_PUBLIC_URL:-http://localhost:8080}
+      SMTP_HOST: ${SMTP_HOST:-mailpit}
+      SMTP_PORT: ${SMTP_PORT:-1025}
+      SMTP_FROM: ${SMTP_FROM:-fantom@localhost}
+      SMTP_TLS: ${SMTP_TLS:-false}
+    volumes:
+      - ./data:/app/data:ro          # raw + processed data: read-only, never modified
+      - ./data/uploads:/app/data/uploads # evaluator uploads: the ONLY writable data path
+      - ./data/outbox:/app/data/outbox   # dev email outbox (when SMTP_HOST empty)
+      - ./ml:/app/ml:ro              # trained models land here from the host
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request;urllib.request.urlopen('http://localhost:8000/api/v1/health')\""]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
   frontend:
     build: ./frontend
     ports:
-      - "8501:8501"
-    environment:
-      - API_URL=http://backend:8000
+      - "${FRONTEND_PORT:-8080}:80"
     depends_on:
-      - backend
-    volumes:
-      - ./data:/app/data
+      backend:
+        condition: service_healthy
     restart: unless-stopped
 
-  # Optional: fully offline LLM (comment out if using Groq/Gemini only)
-  # ollama:
-  #   image: ollama/ollama:latest
-  #   ports:
-  #     - "11434:11434"
-  #   volumes:
-  #     - ollama_data:/root/.ollama
-  #   restart: unless-stopped
-
-# volumes:
-#   ollama_data:
+volumes:
+  pg_data:

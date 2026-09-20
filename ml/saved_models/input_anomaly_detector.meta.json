@@ -1,0 +1,30 @@
+{
+  "model_type": "IsolationForest (unsupervised input-configuration anomaly detector)",
+  "trained_at": "2026-09-19T21:13:54.171117+00:00",
+  "dataset": "data/raw/model3.csv",
+  "dataset_version": "model3.csv @ Mendeley 10.17632/3rw227zxt7.2 (v2, CC BY 4.0); sha256-head noted in metadata",
+  "features": [
+    "predictor_1",
+    "predictor_2",
+    "predictor_3",
+    "predictor_4"
+  ],
+  "preprocessing": "none (numeric inputs; no scaling needed for tree-based isolation)",
+  "random_state": 42,
+  "n_train_rows": 2100,
+  "evaluation": {
+    "method": "unsupervised: score distribution + flagged fraction on test split",
+    "test_rows": 450,
+    "contamination": 0.05,
+    "contamination_rationale": "documented arbitrary screen rate; no labels exist to tune it (auto flagged ~23%)",
+    "flagged_fraction_pct": 5.778,
+    "score_stats_test": {
+      "mean": 0.10303890850867067,
+      "std": 0.054967633803500865,
+      "min": -0.094356229360259,
+      "max": 0.17656767822629044
+    },
+    "note": "No labels exist; precision/recall are not defined and are not reported."
+  },
+  "limitation": "Flags unusual INPUT configurations, not defects - no defect labels exist in the dataset."
+}

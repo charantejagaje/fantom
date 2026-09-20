@@ -19,7 +19,7 @@ import { useIndustrialStore } from '../../store/useIndustrialStore';
 import { AimlBadge } from '../common/AimlConceptExplainer';
 
 interface RootCauseViewProps {
-  onOpenSimulationLab: () => void;
+  onOpenSimulationLab?: () => void;
   onOpenMachineInspection: (stationId: string) => void;
   onOpenAimlGuide?: (termId?: string) => void;
 }
@@ -328,12 +328,14 @@ export const RootCauseView: React.FC<RootCauseViewProps> = ({
               <Cpu size={14} />
               <span>Inspect Bearing #02 on 3D Spindle &rarr;</span>
             </button>
-            <button
-              onClick={onOpenSimulationLab}
-              className="w-full py-2 px-4 rounded-lg bg-[#159A62] text-white hover:bg-[#21C47A] text-xs font-mono font-semibold transition-colors flex items-center justify-center gap-2"
-            >
-              <span>Test Process Countermeasure in Simulation Lab</span>
-            </button>
+            {onOpenSimulationLab && (
+              <button
+                onClick={onOpenSimulationLab}
+                className="w-full py-2 px-4 rounded-lg bg-[#159A62] text-white hover:bg-[#21C47A] text-xs font-mono font-semibold transition-colors flex items-center justify-center gap-2"
+              >
+                <span>Test Process Countermeasure in Simulation Lab</span>
+              </button>
+            )}
           </div>
         </div>
       </div>

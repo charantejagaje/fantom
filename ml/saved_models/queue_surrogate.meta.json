@@ -1,0 +1,92 @@
+{
+  "model_type": "RandomForestRegressor (multi-output queue surrogate)",
+  "trained_at": "2026-09-19T21:13:53.568034+00:00",
+  "dataset": "data/raw/model3.csv",
+  "dataset_version": "model3.csv @ Mendeley 10.17632/3rw227zxt7.2 (v2, CC BY 4.0); sha256-head noted in metadata",
+  "n_rows": 3000,
+  "features": [
+    "predictor_1",
+    "predictor_2",
+    "predictor_3",
+    "predictor_4"
+  ],
+  "targets": [
+    "answer_c1s2",
+    "answer_c1s4",
+    "answer_c2s2",
+    "answer_c2s4",
+    "answer_c3s2",
+    "answer_c3s3",
+    "answer_c4s3",
+    "answer_c4s4"
+  ],
+  "preprocessing": "none required (tree model on raw numeric inputs; no missing values in training data)",
+  "random_state": 42,
+  "split": "train 2100 / val 450 / test 450 (70/15/15, seeded)",
+  "hyperparameters": {
+    "n_estimators": 300,
+    "min_samples_leaf": 2,
+    "n_jobs": 1
+  },
+  "model_selection_note": "LinearRegression baseline scored R2=0.9998 vs RF 0.9980 on test - the ANN mapping is near-linear in the inputs. RF is shipped for robustness to the mild non-linearity/interactions; the baseline number is kept for context.",
+  "metrics_validation_overall": {
+    "mae": 76.91919066946201,
+    "rmse": 133.37984900049116,
+    "r2": 0.9984850949299955
+  },
+  "metrics_test_overall": {
+    "mae": 84.77414932610526,
+    "rmse": 153.50604019720296,
+    "r2": 0.997975605655794
+  },
+  "metrics_test_per_target": {
+    "answer_c1s2": {
+      "mae": 130.11667846905465,
+      "rmse": 220.4477442596151,
+      "r2": 0.9674231870822438
+    },
+    "answer_c1s4": {
+      "mae": 151.63529256229387,
+      "rmse": 237.0642245053176,
+      "r2": 0.9623868805456496
+    },
+    "answer_c2s2": {
+      "mae": 32.80222362145694,
+      "rmse": 55.734350814571535,
+      "r2": 0.9687758693067614
+    },
+    "answer_c2s4": {
+      "mae": 101.00966056594996,
+      "rmse": 149.70293148672178,
+      "r2": 0.8841593924998731
+    },
+    "answer_c3s2": {
+      "mae": 17.752180132244863,
+      "rmse": 26.991422939956873,
+      "r2": 0.9853771839538622
+    },
+    "answer_c3s3": {
+      "mae": 34.62511794336487,
+      "rmse": 53.046590594351194,
+      "r2": 0.9876518557267434
+    },
+    "answer_c4s3": {
+      "mae": 87.13122611310806,
+      "rmse": 133.27688229641345,
+      "r2": 0.9875988326937962
+    },
+    "answer_c4s4": {
+      "mae": 123.12081520136886,
+      "rmse": 192.07730196366728,
+      "r2": 0.9689559311775316
+    }
+  },
+  "baseline_linear_test_overall": {
+    "mae": 19.313216783727135,
+    "rmse": 45.65321019185693,
+    "r2": 0.9998209448487029
+  },
+  "provenance": "model-predicted (outputs are estimates of station queues, never observed measurements)",
+  "limitation": "Trained on ANN-generated answers (simulation model outputs), not floor measurements. Valid only within the predictors' observed ranges.",
+  "python": "3.14.3"
+}

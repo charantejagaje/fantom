@@ -176,6 +176,8 @@ export interface StationTelemetry {
   id: string;
   name: string;
   shortCode: string;
+  /** Observed dataset column this demo station maps to (e.g. 'queue_c1s2'); optional demo-only field. */
+  realStationId?: string;
   type: string;
   zone: 'Zone A' | 'Zone B' | 'Zone C';
   status: StationStatus;

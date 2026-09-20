@@ -1,6 +1,5 @@
 {
-  "name": "FANTOM - Industrial AI Decision Intelligence",
+  "name": "Remix FANTOM - Industrial AI Decision Intelligence",
   "description": "Industrial AI Decision Intelligence platform uniting product quality, production flow, and economics into a 3D digital twin and decision-support system.",
-  "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

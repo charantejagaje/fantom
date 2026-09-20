@@ -162,3 +162,83 @@ No live camera feed, PLC connection, robotic sorting, machine control, or produc
 ## 8. Note on Model Selection
 
 We will finalize the exact machine-learning models after inspecting the organizer-provided datasets. We will choose models that match the available data and the required tasks instead of choosing a model without checking the data first.
+
+---
+
+## 9. Deployment-Ready Platform (FastAPI + PostgreSQL + React)
+
+A production architecture now sits alongside the original project work:
+
+```text
+frontend/  (React 19 + Vite + TS + Tailwind)
+├── src/platform/            <- deployment platform UI (9 sections)
+│   ├── PlatformApp.tsx      shell: nav + health banner + section router
+│   ├── api.ts               the ONLY data access path (typed client)
+│   └── sections/            Dashboard, Data, Production, Quality/ML,
+│                            Bottlenecks, Anomalies, Simulation,
+│                            Recommendations, Team Feature
+└── src/features/friend-feature/   <- teammate extension point
+
+backend/app/  (FastAPI + SQLAlchemy 2 + pydantic v2)
+├── main.py                  app factory: CORS, routers, lifespan DB init
+├── config.py                env-driven settings (no secrets in code)
+├── db.py                    engine/session/Base (+ idempotent init)
+├── models.py                users, datasets, analysis_results,
+│                            simulation_runs, recommendations
+├── schemas.py               typed API contract w/ provenance labels
+├── services/                dataset registry, analytics, anomalies,
+│                            simulation, ML registry, recommendations
+└── api/                     routers: /health /dataset /analytics
+                             /production /bottlenecks /associations
+                             /anomalies /ml /simulation
+                             /recommendations + friend_feature/
+
+ml/saved_models/              drop-in registry for REAL trained models
+compose.yaml                  postgres + backend + nginx frontend
+```
+
+### Run locally (no Docker)
+
+```bash
+# backend (SQLite fallback; set DB_ENGINE=postgresql for real Postgres)
+cd fantom
+DB_ENGINE=sqlite python -m uvicorn backend.app.main:app --port 8100
+
+# frontend
+cd fantom/frontend
+npm install --legacy-peer-deps
+npm run dev        # tsx server.ts: AI-Studio app + /api/analyze-defect + vite
+# platform UI:  http://localhost:3000/platform.html
+# AI-Studio app: http://localhost:3000/  (Platform link in the header)
+#
+# Vite-only alternative (no Express endpoints / no analyze-defect):
+#   npm run dev:vite
+#
+# GEMINI_API_KEY (frontend/.env): empty = defect studio runs in offline demo mode
+```
+
+### Run in Docker (production shape)
+
+```bash
+cp .env.example .env        # fill in real values; NEVER commit .env
+docker compose up --build
+# platform: http://localhost:8080/platform.html
+# API docs: http://localhost:8080/api/v1/docs (proxied to backend)
+```
+
+### Architecture rules baked in
+
+- The CSVs are the system of record for observations; the DB stores registry,
+  analysis results, simulation runs and recommendations - the raw data is
+  never duplicated into tables and is mounted **read-only** in Docker.
+- Every analytics response carries `provenance`
+  (`observed-simulation` | `model-predicted` | `simulated-estimate`).
+- Metrics not supported by the data (utilization, throughput, defects, cost)
+  are returned as "not available" lists - never invented.
+- ML predictions 404 until a real trained artifact exists in
+  `ml/saved_models/` (`<name>.joblib` + optional `.meta.json`).
+- Recommendations are advisory-only, generated strictly from stored
+  structured results; the system never controls machinery.
+- Teammate extension: `backend/app/api/friend_feature.py` +
+  `backend/app/services/friend_feature.py` +
+  `frontend/src/features/friend-feature/` - capability-driven, no core edits.

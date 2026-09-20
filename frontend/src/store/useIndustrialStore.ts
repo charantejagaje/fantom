@@ -162,6 +162,7 @@ export const useIndustrialStore = create<IndustrialState>((set, get) => ({
   workerSmartphoneView: true,
 
   // Precision Metal Initial State
+  realAnalytics: { loading: true, error: null, overview: null, stations: [], bottlenecks: null, associations: null },
   currentScenario: 'COMBINED_IMPACT',
   precisionUnits: PRECISION_METAL_UNITS,
   selectedInvestigationUnitId: 'UNIT-4821',
